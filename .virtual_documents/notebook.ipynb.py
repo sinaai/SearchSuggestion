@@ -1,6 +1,6 @@
 from get_search_suggestion import return_suggestion
 
-return_suggestion('ی')
+return_suggestion('سینا')
 
 
 import pickle
