@@ -1,5 +1,10 @@
 # SearchSuggestion
 
+This program uses Redis database.
+Before using, you have to start redis server
+by typing `redis-server` prompt in terminal.
+
+
 Run `dump_searchlog.py` to make a log file.
 
 Run `create_search_suggestion.py` to make suggestions from the log file.
