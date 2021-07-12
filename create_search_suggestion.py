@@ -3,6 +3,7 @@ import datetime
 import pickle
 import click
 import os
+import redis
 
 
 def time_difference(record1, record2):
@@ -27,7 +28,6 @@ def find_suggestions(df, suggestions, search_log, time=10):
     for index1, record1 in df.iterrows():
         suggestions['***checkpoint***'] = index1
         if index1 % 500 == 0:
-            os.system('cls' if os.name == 'nt' else 'clear')
             print("{:d} out of {:d}".format(index1, search_log.last_valid_index()))
         for index2, record2 in df[df.session_id == record1.session_id].iterrows():
             if is_query_edited(record1, record2, time):
@@ -40,32 +40,33 @@ def find_suggestions(df, suggestions, search_log, time=10):
 
 
 def create_search_suggestion(search_log_file='files/search_log.jsonl',
-                             suggestion_file='files/search_suggestion.pkl',
-                             suggestion_time=10):
+                             suggestion_time=10,
+                             redis_port=6379,
+                             redis_db=9):
     search_log = pd.read_json(search_log_file, lines=True)
+    r = redis.Redis(host='localhost', port=redis_port, db=redis_db)
     try:
-        pkl_file = open(suggestion_file, "rb")
-        suggestions = pickle.load(pkl_file)
-        pkl_file.close()
+        read_dict = r.get('suggestions')
+        suggestions = pickle.loads(read_dict)
         last_checkpoint = suggestions['***checkpoint***']
         df = search_log[last_checkpoint:]
-    except FileNotFoundError:
+    except TypeError:
         suggestions = dict()
         df = search_log
 
     find_suggestions(df, suggestions, search_log, time=suggestion_time)
 
-    pkl_file = open(suggestion_file, "wb")
-    pickle.dump(suggestions, pkl_file)
-    pkl_file.close()
+    p_suggestions = pickle.dumps(suggestions)
+    r.set('suggestions', p_suggestions)
 
 
 @click.command()
 @click.option('--search-log-file', default='files/search_log.jsonl', type=str)
-@click.option('--suggestion-file', default='files/search_suggestion.pkl', type=str)
 @click.option('--suggestion-time', default=10, type=int)
-def main(search_log_file, suggestion_file, suggestion_time):
-    create_search_suggestion(search_log_file, suggestion_file, suggestion_time)
+@click.option('--redis_port', default=6379, type=int)
+@click.option('--redis_db', default=9, type=int)
+def main(search_log_file, suggestion_time, redis_port, redis_db):
+    create_search_suggestion(search_log_file, suggestion_time, redis_port, redis_db)
 
 
 if __name__ == '__main__':
