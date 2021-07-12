@@ -2,7 +2,6 @@ import pandas as pd
 import datetime
 import pickle
 import click
-import os
 import redis
 
 
@@ -41,10 +40,11 @@ def find_suggestions(df, suggestions, search_log, time=10):
 
 def create_search_suggestion(search_log_file='files/search_log.jsonl',
                              suggestion_time=10,
+                             redis_host='localhost',
                              redis_port=6379,
                              redis_db=9):
     search_log = pd.read_json(search_log_file, lines=True)
-    r = redis.Redis(host='localhost', port=redis_port, db=redis_db)
+    r = redis.Redis(host=redis_host, port=redis_port, db=redis_db)
     try:
         read_dict = r.get('suggestions')
         suggestions = pickle.loads(read_dict)
@@ -63,10 +63,11 @@ def create_search_suggestion(search_log_file='files/search_log.jsonl',
 @click.command()
 @click.option('--search-log-file', default='files/search_log.jsonl', type=str)
 @click.option('--suggestion-time', default=10, type=int)
-@click.option('--redis_port', default=6379, type=int)
-@click.option('--redis_db', default=9, type=int)
-def main(search_log_file, suggestion_time, redis_port, redis_db):
-    create_search_suggestion(search_log_file, suggestion_time, redis_port, redis_db)
+@click.option('--redis-host', default='localhost', type=str)
+@click.option('--redis-port', default=6379, type=int)
+@click.option('--redis-db', default=9, type=int)
+def main(search_log_file, suggestion_time, redis_host, redis_port, redis_db):
+    create_search_suggestion(search_log_file, suggestion_time, redis_host, redis_port, redis_db)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from get_search_suggestion import return_suggestion
 
-
 app = FastAPI()
 
 
