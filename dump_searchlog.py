@@ -2,6 +2,7 @@ import json
 import logging
 import click
 from elasticsearch import Elasticsearch
+import os
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
@@ -30,6 +31,9 @@ def main(elastic_host, elastic_port, elastic_user, elastic_pass, index_name, req
 
     sid = data['_scroll_id']
     scroll_size = len(data['hits']['hits'])
+
+    if os.path.isfile(dump_name):
+        os.remove(dump_name)
 
     while scroll_size > 0:
         logging.info(f'dumping {scroll_size} results')
