@@ -23,11 +23,11 @@ from get_search_suggestion import return_suggestion
 #it returns all of query suggestions in order (most repeated to least repeated)
 return_suggestion(query='سلام', method='all') 
 
-#it returns n most repeated query suggestions in order.
-return_suggestion(query='سلام', method='n-best', n=n) 
+#it returns 4 most repeated query suggestions in order.
+return_suggestion(query='سلام', method='n-best', n=4) 
 
-#it returns query suggestions which repeated at least n times.
-return_suggestion(query='سلام', method='n-repeated', n=n) 
+#it returns query suggestions which repeated at least 2 times.
+return_suggestion(query='سلام', method='n-repeated', n=2) 
 ```
 
 
