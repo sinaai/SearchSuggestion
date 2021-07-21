@@ -1,11 +1,7 @@
 import json
 import logging
-
 import click
-import requests
-from click.decorators import option
 from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 

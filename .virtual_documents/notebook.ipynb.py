@@ -1,12 +1,15 @@
 from get_search_suggestion import return_suggestion
 
-return_suggestion('سینا')
+# all suggestions of 'سلام'
+return_suggestion('سلام')
 
 
-return_suggestion('سینا', method='n-repeated', n=1)
+# all suggestions of 'سلام' that repeated at least 2 times
+return_suggestion('سلام', method='n-repeated', n=2)
 
 
-return_suggestion('سینا', method='n-best', n=1)
+# 4 most repeated suggestions of 'سلام' 
+return_suggestion('سلام', method='n-best', n=4)
 
 
 

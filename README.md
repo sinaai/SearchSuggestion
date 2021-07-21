@@ -4,11 +4,16 @@ This program uses Redis database.
 Before using, you have to start redis server
 by typing `redis-server` prompt in terminal.
 
-
+### Build suggestions
 Run `dump_searchlog.py` to make a log file.
 
 Run `create_search_suggestion.py` to make suggestions from the log file.
 
+Run `auto_build.py` to make log file and build suggestions automatically. 
+It will add new suggestions every 12 hours.
+
+
+### Get suggestions for a query
 Use `get_search_suggestion.return_suggestion` to get suggestions for a query.
 Use following example.
 
