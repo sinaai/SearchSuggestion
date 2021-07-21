@@ -12,11 +12,11 @@ def return_suggestion(query,
         suggestions = r.zrevrange(query, 0, -1)
         suggestions = [x.decode('UTF8') for x in suggestions]
         return suggestions
-    if method == 'minimum_repeated':
+    if method == 'n-repeated':
         suggestions = r.zrevrangebyscore(query, float('inf'), n)
         suggestions = [x.decode('UTF8') for x in suggestions]
         return suggestions
-    if method == 'maximum_numbers':
+    if method == 'n-best':
         suggestions = r.zrevrange(query, 0, -1)
         suggestions = [x.decode('UTF8') for x in suggestions]
         return suggestions[:n]

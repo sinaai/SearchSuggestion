@@ -11,4 +11,14 @@ def read_root():
 
 @app.get("/query/{query}")
 def read_item(query: str):
-    return return_suggestion(query)
+    return return_suggestion(query, method='all')
+
+
+@app.get("/repeated/{n}/{query}")
+def read_item(query: str, n: int):
+    return return_suggestion(query, method='n-repeated', n=n)
+
+
+@app.get("/best/{n}/{query}")
+def read_item(query: str, n: int):
+    return return_suggestion(query, method='n-best', n=n)
