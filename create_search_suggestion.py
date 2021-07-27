@@ -1,12 +1,13 @@
 import pandas as pd
 import datetime
 import click
+from dateutil.parser import isoparse
 import redis
 
 
 def time_difference(record1, record2):
-    time_record1 = datetime.datetime.fromisoformat(record1.time[:-1])
-    time_record2 = datetime.datetime.fromisoformat(record2.time[:-1])
+    time_record1 = isoparse(record1.time[:-1])
+    time_record2 = isoparse(record2.time[:-1])
     return time_record2 - time_record1
 
 
